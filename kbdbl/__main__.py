@@ -72,7 +72,7 @@ def main():
         "offbrightness": 0
         } #Default configuration
 
-        configfolder=str(Path.home())+'/.config/keylight'
+        configfolder=str(Path.home())+'/.config/kbdbl'
 
         if Path(configfolder).is_dir() is False: #If basic configuration not created
             print('configuring')
