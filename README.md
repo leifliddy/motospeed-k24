@@ -3,6 +3,8 @@
 
 Free Drevo Calibur Lighting Control Tool
 
+**Now remastered for absolutely different keyboard!**
+
 ## Usage
 
 ### Linux (possibly also unixes)
@@ -57,10 +59,18 @@ If under Windows, you will need the [libusb windows binaries](https://github.com
 
 ### Hardware
 
-The Drevo Calibur keyboard. I have the 71 key version, but the 72 key version should work as well. If not, please leave an issue.
-
-Furthermore i run the keyboard with firmware V3.4 for the 71 key edition. This should be equivalent to firmware V2.3 for the 72 key version. Both come with the date 20170908. I don't know if this works for earlier versions. While I'm pretty sure it does not work for the initial factory firmware, it might work for intermediate versions. Please leave an issue or pr if you know.
+My keyboard is ZET  Blade, but should work with keyboard on the same chip. VID: 0416, PID: a0f8, Winbond Electronics Corp. Gaming Keyboard. 
 
 ## Restrictions
 
 Due to the nature of the protocol the Calibur uses to set the leds it is not possible to hack fluid animations. This is due to the fact that for every single change in the configuration of the lighting a new colormap for every key is transfered to the keyboard. This process can take over half a second.
+
+
+## Adding support for another keyboard (reverse-engineering workflow)
+1. Set up virtual machine with Windows and install vendor's program into it. 
+2. Forward your keyboard into the VM
+3. Hook up wireshark in Linux and sniff keyboard's protocol
+4. Recreate it's behaviour
+5. Fork repo and post your code
+6. ????
+7. PROFIT
