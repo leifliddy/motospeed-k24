@@ -7,7 +7,7 @@ import argparse
 import time
 import drevo.keylights as keylights
 from drevo import keyboard
-
+import json, subprocess, re, time
 
 
 def main():
@@ -27,17 +27,35 @@ def main():
         "Set random color for given key or full keyboard")
     parse.add_argument("-R", "--allrandom", action="store_true", help=
         "Set each key to a random color. This overwrites all other options.")
-    parse.add_argument("-v", "--verbose", action="store_true", help=
-        "Return list of current keys and their colors at the end of execution.")
+    parse.add_argument("-p", "--profile", nargs='?', help=
+        "JSON color profile to use")
+    parse.add_argument("-b", "--brightness", nargs='?', help=
+        "Set keyboard brightness (0-6)")
+    parse.add_argument("-d", "--daemon", action="store_true", help=
+        "Daemon mode")
+    parse.add_argument("--capslight", action="store_true", help=
+        "Indicate capslock status by key color")
+    parse.add_argument("--followdpms", action="store_true", help=
+        "Follow monitor's DPMS status and disable keyboard light if monitor disabled")
+
+
     args = parse.parse_args()
 
     lightctl = keylights.Keylights()
     
-    if not args.allrandom and args.color is None and not args.random and not args.verbose:
+    if not args.allrandom and args.color is None and not args.random and args.profile is None and args.brightness is None and not args.daemon:
         parse.print_usage()
+
+    if args.brightness is not None:
+        lightctl.setbrightness(int(args.brightness))
 
     if args.allrandom:
         lightctl.setrandom()
+
+    if args.profile is not None:
+        with open(args.profile) as f:
+            profile_json = json.load(f)
+        lightctl.setprofile(profile_json)
 
     if args.random:
         args.color = "#" + "".join(random.sample("0123456789abcdef", 6))
@@ -45,13 +63,27 @@ def main():
     if args.color is not None:
         if args.key is not None:
             # Set light for specific key
-            lightctl.setkey(keyboard[args.key], args.color)
+            lightctl.setkey(args.key, args.color)
         else:
             # Set light for all keys
             lightctl.setall(args.color)
-        
-    if args.verbose:
-        print(lightctl.getcolors())
 
+    if args.daemon:
+        monitorpattern='(?<=Monitor is ).*'
+        kbdlenpattern='(?<=LED mask:  )\\d*'
+        while  True:
+            xsetresult=subprocess.check_output('xset q', shell=True).decode("utf-8")
+            capslock_status=int(re.search(kbdlenpattern, xsetresult).group())
+            monitor_status=re.search(monitorpattern, xsetresult).group()
+            if (capslock_status==3 or capslock_status==1) and args.capslight:
+                lightctl.setkey('CAPS', 'red')
+            if (capslock_status==2 or capslock_status==0) and args.capslight:
+                lightctl.setkey('CAPS', 'white')
+
+            if (monitor_status!='On') and args.followdpms:
+                lightctl.setbrightness(0)
+            if (monitor_status=='On') and args.followdpms:
+                lightctl.setbrightness(5)
+            time.sleep(1)
 if __name__ == "__main__":
     main()

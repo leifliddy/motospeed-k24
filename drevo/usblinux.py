@@ -8,8 +8,8 @@ class Usblinux(usbadapter.Usbadapter):
 
     def __init__(self):
         dev = usb.core.find(
-            idVendor=0x0483,  # STMicroelectronics
-            idProduct=0x4010  # Drevo Calibur Keyboard
+            idVendor=0x0416,  # STMicroelectronics
+            idProduct=0xa0f8  # Drevo Calibur Keyboard
         )
         if dev is None:
             # Device not present, or user is not allowed to access device.
@@ -26,7 +26,7 @@ class Usblinux(usbadapter.Usbadapter):
 
         writergbendpoint = usb.util.find_descriptor(
             interface,
-            bEndpointAddress=0x1
+            bEndpointAddress=0x03
         )
         if writergbendpoint is None:
             raise ValueError("Endpoint for writing not found")
@@ -35,7 +35,7 @@ class Usblinux(usbadapter.Usbadapter):
         
         readrgbendpoint = usb.util.find_descriptor(
             interface,
-            bEndpointAddress=0x84
+            bEndpointAddress=0x03
         )
         if readrgbendpoint is None:
             raise ValueError("Endpoint for reading not found")

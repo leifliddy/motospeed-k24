@@ -2,8 +2,10 @@
 from platform import system
 from colour import Color
 import drevo.usbadapter as usbadapter
-from drevo import keyboard as keymap
-import random
+from drevo import keyboard
+import random, copy
+
+
 if system() == 'Windows':
     import drevo.usbwindows as usbwindows
 else:
@@ -34,13 +36,14 @@ class Keylights:
         The color parameter is a colour.Color object
         or alternatively a string interpretable by the colour.Color constructor
         """
+        colorlist = copy.deepcopy(keyboard) #Easiest way to get keys list
+
         if not isinstance(color, Color):
             color = Color(color)
-        colstr = color.hex_l[1:]
-        fullcolorstr = colstr * 72
-        # TODO: construct this string from some kind of list.
-        # said list should have a corresponding map solving keynames to ids.
-        self.adapter.sendhex(fullcolorstr)
+        colorstr = color.hex_l[1:]
+        for i in colorlist:
+            colorlist[i]=colorstr
+        self.adapter.sendhex(colorlist)
 
     def setrandom(self):
         """
@@ -49,11 +52,17 @@ class Keylights:
         TODO: Change  random color calculation. 
         Maybe use hsl instead rgb and only use intensive colors.
         """
-        fullcolorstr = ''
-        for _ in range(0,72):
+        colorlist = copy.deepcopy(keyboard)
+
+        for i in colorlist:
             color = Color(rgb=(random.uniform(0.0, 1.0), random.uniform(0.0, 1.0), random.uniform(0.0, 1.0)))
-            fullcolorstr += color.hex_l[1:]
-        self.adapter.sendhex(fullcolorstr)
+            colorlist[i]=color.hex_l[1:]
+        self.adapter.sendhex(colorlist)
+
+    def setbrightness(self, brightness):
+        if brightness>7:
+            brightness=7
+        self.adapter.sendbrightness(brightness)
 
     def setkey(self, keycode, color):
         """
@@ -62,28 +71,11 @@ class Keylights:
 
         if not isinstance(color, Color):
             color = Color(color)
-        
-        oldcolorstr = self.adapter.gethex()
-        fullcolorstr = ''
-        for i in range(0,72):
-            if i == keycode:
-                colstr = color.hex_l[1:]
-            else:
-                colstr = oldcolorstr[i*6:(i+1)*6]
-            fullcolorstr += colstr
-        self.adapter.sendhex(fullcolorstr)
+        colorstr = color.hex_l[1:]
 
-    def setkeys(self, keycodes, colors):
-        """ 
-        Sets the colors of multiple keys at once
-        TODO
-        """
-        pass
+        colorlist={}
+        colorlist[keycode]=colorstr #Thats all! Just add key to colorlist and it'll be correctly sent to the keyboard
+        self.adapter.sendhex(colorlist)
 
-    def getcolors(self):
-        colstring = self.adapter.gethex()
-        inv_keymap = {v: k for k,v in keymap.items()}
-        keycolors = {}
-        for i in range(72):
-            keycolors[inv_keymap[i]] = (colstring[i*6:i*6+2],colstring[i*6+2:i*6+4],colstring[i*6+4:i*6+6])
-        return keycolors
+    def setprofile(self, json):
+        self.adapter.sendhex(json)
