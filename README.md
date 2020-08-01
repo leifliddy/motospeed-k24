@@ -1,9 +1,7 @@
 
-# fdclct
+# kbdbl
 
-Free Drevo Calibur Lighting Control Tool
-
-**Now remastered for absolutely different keyboard!**
+Keyboard backlight control for Winbond Gaming Keyboard chip-based keyboards. 
 
 ## Usage
 
@@ -14,7 +12,7 @@ Free Drevo Calibur Lighting Control Tool
 In the folder containing the drevo folder, use the shell to light the C key in red:
 
 ```bash
-sudo python3 -m drevo -c red -k C
+sudo python3 -m kbdbl -c red -k C
 ```
 
 **The better way:**
@@ -24,25 +22,33 @@ I highly discourage you from running anybody's shitty python code with root priv
 
 ### Windows
 
+DPMS and Capslock features will not work at all. Other features should work (but not tested), you can try it at your own risk! I will not support Windows compatibility by myself.
 ```cmd
-python3 -m drevo --help
+python3 -m kbdbl --help
 ```
 
-### To use it as python module
 
-Include the drevo folder in your module path and simply import it in your python file.
+### Features
 
-```python
-import drevo
-```
+* Absoulutely custom backlight color profile (via config file)
+* Changing keyboard brightness
+* Following monitor's state by DPMS. Keyboard can disable backlight or reduce brightness if monitor is disabled.
+* Indicating CapsLock state by key color
 
-### General
+### Settings
 
-If you want to input colors as hexadecimal values input it like this: ```-c #deadbe```, otherwise many color names are accepted.
+All backlight-related settings is located in .config/kbdbl in your home folder
 
-## What this should one day become
+config.json is responsible for main settings:
 
-This tool is to set the color of the RGB LEDs in the Drevo Calibur keyboard. By default this keyboard can be set to 8 different colors per key, but the Windows software by Drevo ([you can get from here](https://drevo.net/product/keyboard/calibur)) supports color selection per key with 24 bit color. Sadly it is closed source and Windows exclusive. So this project aims to reverse engineer the USB communication and implement a free version of the same tool to enable platform independent keyboard RGB glory.
+* defaultprofile: Default profile's file name
+* brightness: Keyboard brightness
+* capslight: Indicate CapsLock by key color
+* capslight_oncolor: CapsLock enabled key color
+* capslight_offcolor: CapsLock disabled color
+* followdpms: Disable (or reduce) backlight if monitor is disabled
+
+defaultprofile.json file contains array with color in hex format for each key (default is all white)
 
 ## Requirements
 
@@ -59,11 +65,11 @@ If under Windows, you will need the [libusb windows binaries](https://github.com
 
 ### Hardware
 
-My keyboard is ZET  Blade, but should work with keyboard on the same chip. VID: 0416, PID: a0f8, Winbond Electronics Corp. Gaming Keyboard. 
+My keyboard is ZET  Blade, but should work with any keyboard on the same chip. VID: 0416, PID: a0f8, Winbond Electronics Corp. Gaming Keyboard. 
 
 ## Restrictions
 
-Due to the nature of the protocol the Calibur uses to set the leds it is not possible to hack fluid animations. This is due to the fact that for every single change in the configuration of the lighting a new colormap for every key is transfered to the keyboard. This process can take over half a second.
+Default fluid animations not avaliable, only custom profile.
 
 
 ## Adding support for another keyboard (reverse-engineering workflow)
