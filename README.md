@@ -17,8 +17,12 @@ sudo python3 -m kbdbl -c red -k C
 
 **The better way:**
 
-Use a udev rule so you may access the USB device with your user privileges and drop the sudo. An example can be found [here](utils/).
-I highly discourage you from running anybody's shitty python code with root privileges.
+PKGBUILD for Arch Linux is avalible. It contains the systemd service, udev rule and ready for everyday usage.
+ Just after installation
+```bash
+sudo systemctl enabled winbond-kbdbl@_username_
+```
+and you are ready to go.
 
 ### Windows
 
