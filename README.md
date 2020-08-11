@@ -20,7 +20,7 @@ sudo python3 -m kbdbl -c red -k C
 PKGBUILD for Arch Linux is avalible. It contains the systemd service, udev rule and ready for everyday usage.
  Just after installation
 ```bash
-sudo systemctl enabled winbond-kbdbl@_username_
+sudo systemctl enabled winbond-kbdbl@username
 ```
 and you are ready to go.
 
