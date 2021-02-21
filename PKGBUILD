@@ -1,7 +1,7 @@
 # Maintainer:  Ilya Chelyadin <ilya77105@gmail.com>
 
 pkgname=winbond-kbdbl
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
 pkgdesc='Manage color profiles of Winbond based keyboard (Tyrfing V2, ZET Blade, etc.)'
 arch=('i686' 'x86_64')
@@ -18,16 +18,16 @@ build() {
 		cat <<-'EOF' > ./winbond-kbdbl@.service
 		[Unit]
 		Description=Allow user access to keyboard backlight
-		After=systemd-udevd.service
+		After=graphical.target
 		
 		[Service]
 		User=%i
 		WorkingDirectory=/usr/lib/winbond-kbdbl
 		ExecStart=env DISPLAY=:0 /usr/bin/python3 -m kbdbl -d
+
+		Restart=on-failure
+		RestartSec=10s
 		
-		[Install]
-		After=graphical.target
-		Wants=graphical.target
 	EOF
 
 	cat <<-'EOF' > ./winbond-kbdbl.sh

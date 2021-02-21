@@ -24,8 +24,8 @@ class Keylights:
             self.adapter = binding_winbond.Usblinux()
             return
 
-        if binding_noname.isPresented():
-            self.adapter = binding_noname.Usblinux()
+        if binding_optical.isPresented():
+            self.adapter = binding_optical.Usblinux()
             return
 
     def gencolorprofile(self, color):
