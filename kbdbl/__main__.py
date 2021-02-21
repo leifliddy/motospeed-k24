@@ -5,7 +5,7 @@ Parses and validates inputs for command line use
 import random
 import argparse
 import kbdbl.keylights as keylights
-from kbdbl import keyboard
+import kbdbl.systemstat as systemstat
 import json, subprocess, re, time
 from pathlib import Path
 
@@ -35,7 +35,8 @@ def main():
     args = parse.parse_args()
 
     lightctl = keylights.Keylights()
-    
+    configfolder=str(Path.home())+'/.config/kbdbl/'
+
     if not args.allrandom and args.color is None and not args.random and args.profile is None and args.brightness is None and not args.daemon:
         parse.print_usage()
 
@@ -46,7 +47,7 @@ def main():
         lightctl.setrandom()
 
     if args.profile is not None:
-        with open(args.profile) as f:
+        with open(configfolder+args.profile) as f:
             profile_json = json.load(f)
         lightctl.setprofile(profile_json)
 
@@ -64,49 +65,47 @@ def main():
     if args.daemon:
         config={
         "defaultprofile": "defaultprofile.json",
-        "brightness": 6,
+        "brightness": 100,
         "capslight": False,
         "capslight_oncolor": "ff0000",
         "capslight_offcolor": "ffffff",
         "followdpms": False,
         "offbrightness": 0
         } #Default configuration
-
-        configfolder=str(Path.home())+'/.config/kbdbl'
+        capslock_state=False
+        monitor_state=False
 
         if Path(configfolder).is_dir() is False: #If basic configuration not created
             print('configuring')
             Path(configfolder).mkdir()
-            with open(configfolder+'/config.json', 'w') as f:
+            with open(configfolder+'config.json', 'w') as f:
                 json.dump(config, f, indent=4) #Save default config
-            with open(configfolder+'/'+config['defaultprofile'], 'w') as f:  
+            with open(configfolder+config['defaultprofile'], 'w') as f:  
                 json.dump(lightctl.gencolorprofile('white'), f, indent=4) #Save default profile
         else:
-            with open(configfolder+'/config.json') as f:
+            with open(configfolder+'config.json') as f:
                 config = json.load(f) #Load config if exist
 
 
-        with open(configfolder+'/'+config['defaultprofile']) as f:
+        with open(configfolder+config['defaultprofile']) as f:
             profile_json = json.load(f)
         lightctl.setprofile(profile_json) #Load profile on start
 
-        monitorpattern='(?<=Monitor is ).*'
-        kbdlenpattern='(?<=LED mask:  )\\d*'
-
         while  True:
-            xsetresult=subprocess.check_output('xset q', shell=True).decode("utf-8")
-            capslock_status=int(re.search(kbdlenpattern, xsetresult).group())
-            monitor_status=re.search(monitorpattern, xsetresult).group()
-            if (capslock_status==3 or capslock_status==1) and config['capslight']:
+            capslock_state_old=capslock_state
+            monitor_state_old=monitor_state
+            capslock_state=systemstat.getCapslockState()
+            monitor_state=systemstat.getDPMSState()
+            if capslock_state and not capslock_state_old and config['capslight']:
                 lightctl.setkey('CAPS', '#'+config['capslight_oncolor'])
-            if (capslock_status==2 or capslock_status==0) and config['capslight']:
+            if not capslock_state and capslock_state_old and config['capslight']:
                 lightctl.setkey('CAPS', '#'+config['capslight_offcolor'])
 
-            if (monitor_status!='On') and config['followdpms']:
+            if not monitor_state and monitor_state_old and config['followdpms']:
                 lightctl.setbrightness(config['offbrightness'])
-            if (monitor_status=='On') and config['followdpms']:
+            if monitor_state and not monitor_state_old and config['followdpms']:
                 lightctl.setbrightness(config['brightness'])
-            time.sleep(1)
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":

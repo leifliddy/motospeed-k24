@@ -1,1 +1,2 @@
 ATTRS{idVendor}=="0416",ATTRS{idProduct}=="a0f8",MODE="0666",GROUP="users"
+ATTRS{idVendor}=="2ea8",ATTRS{idProduct}=="2125",MODE="0666",GROUP="users"

@@ -1,15 +1,12 @@
 """ Class to control the lights """
 from platform import system
 from colour import Color
-import kbdbl.usbadapter as usbadapter
-from kbdbl import keyboard
 import random, copy
 
 
-if system() == 'Windows':
-    import kbdbl.usbwindows as usbwindows
-else:
-    import kbdbl.usblinux as usblinux
+import kbdbl.binding_optical as binding_optical
+import kbdbl.binding_winbond as binding_winbond
+
 
 class Keylights:
     """
@@ -21,16 +18,18 @@ class Keylights:
 
     see: Keylights.setall() and Keylights.setkey() for practical uses
     """
-    adapter: usbadapter.Usbadapter = None
 
     def __init__(self):
-        if system() == 'Windows':
-            self.adapter = usbwindows.Usbwindows()
-        else:
-            self.adapter = usblinux.Usblinux()
+        if binding_winbond.isPresented():
+            self.adapter = binding_winbond.Usblinux()
+            return
+
+        if binding_noname.isPresented():
+            self.adapter = binding_noname.Usblinux()
+            return
 
     def gencolorprofile(self, color):
-        colorlist = copy.deepcopy(keyboard) #Easiest way to get keys list
+        colorlist = copy.deepcopy(self.adapter.keyboard) #Easiest way to get keys list
 
         if not isinstance(color, Color):
             color = Color(color)
@@ -57,7 +56,7 @@ class Keylights:
         """
         Sets random colors for each key.
         """
-        colorlist = copy.deepcopy(keyboard)
+        colorlist = copy.deepcopy(self.adapter.keyboard)
 
         for i in colorlist:
             color = Color(hsl=(random.uniform(0.0, 1.0), 1, 0.5))
@@ -65,8 +64,6 @@ class Keylights:
         self.adapter.sendhex(colorlist)
 
     def setbrightness(self, brightness):
-        if brightness>7:
-            brightness=7
         self.adapter.sendbrightness(abs(brightness))
 
     def setkey(self, keycode, color):
