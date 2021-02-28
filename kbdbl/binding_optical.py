@@ -3,10 +3,13 @@ import usb.core
 import usb.util
 from operator import itemgetter
 
+vid=0x2ea8
+pid=0x2125
+
 def isPresented():
     dev = usb.core.find(
-        idVendor=0x2ea8,  # Noname
-        idProduct=0x2125  # Gaming Keyboard
+        idVendor=vid,  # Noname
+        idProduct=pid  # Gaming Keyboard
     )
     if dev is not None:
         return(True)
@@ -19,8 +22,8 @@ class Usblinux():
 
     def connect(self):
         dev = usb.core.find(
-            idVendor=0x2ea8,  # Noname
-            idProduct=0x2125  # Gaming Keyboard
+            idVendor=vid,  # Noname
+            idProduct=pid  # Gaming Keyboard
         )
         if dev is None:
             # Device not present, or user is not allowed to access device.

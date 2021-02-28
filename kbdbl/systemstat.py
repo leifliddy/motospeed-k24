@@ -3,14 +3,22 @@ from pathlib import Path
 ledpath=''
 devicepath=''
 
-def getCapslockState():
+def getCapslockState(vid, pid):
 	global ledpath
 	ledspath=Path('/sys/class/leds')
 	if ledpath=='' or not Path(ledpath).exists():
 		for x in ledspath.iterdir():
 			ledpath=str(x)
 			if ledpath.find('capslock')!=-1:
-				break
+				f=open(ledpath+'/device/id/product')
+				pid_path=f.read()
+				f.close()
+				f=open(ledpath+'/device/id/vendor')
+				vid_path=f.read()
+				f.close()
+				if ("%0.4x" % vid)+'\n'==vid_path and ("%0.4x" % pid)+'\n'==pid_path:
+					print(ledpath)
+					break
 	f=open(ledpath+'/brightness')
 	state_str=f.read()
 	f.close()

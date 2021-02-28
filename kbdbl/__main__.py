@@ -94,7 +94,7 @@ def main():
         while  True:
             capslock_state_old=capslock_state
             monitor_state_old=monitor_state
-            capslock_state=systemstat.getCapslockState()
+            capslock_state=systemstat.getCapslockState(lightctl.vid, lightctl.pid)
             monitor_state=systemstat.getDPMSState()
             if capslock_state and not capslock_state_old and config['capslight']:
                 lightctl.setkey('CAPS', '#'+config['capslight_oncolor'])

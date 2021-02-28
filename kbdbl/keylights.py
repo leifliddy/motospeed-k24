@@ -18,14 +18,19 @@ class Keylights:
 
     see: Keylights.setall() and Keylights.setkey() for practical uses
     """
-
+    vid=0
+    pid=0
     def __init__(self):
         if binding_winbond.isPresented():
             self.adapter = binding_winbond.Usblinux()
+            self.vid=binding_winbond.vid
+            self.pid=binding_winbond.pid
             return
 
         if binding_optical.isPresented():
             self.adapter = binding_optical.Usblinux()
+            self.vid=binding_optical.vid
+            self.pid=binding_optical.pid
             return
 
     def gencolorprofile(self, color):
