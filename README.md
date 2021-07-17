@@ -40,16 +40,16 @@ In this case, the -a (ambient light) value would be set to purple (to match the 
 The Motospeed K24 Mechanical numeric keyPad.  
 VID: 0416, PID: a0f8, Winbond Electronics Corp. Gaming Keyboard.
 
-# Restrictions
+### Restrictions
 This was a very quick and dirty rewrite (and simplifcation) of the https://github.com/brainrom/winbond-kbdbl project
 to support the Motospeed K24 numeric keypad.
 
 You can only set the keys to a single color and adjust the brightness. That's pretty much it.  
 I simply don't have the desire or need to enable effects or to enable profiles to set individual keys to different colors.  
-But honestly, it wouldn't be that difficult to use wireshark to capture the HID Data and analyze + decode it (which is how I made this driver)
+But honestly, it wouldn't be that difficult to use wireshark to capture the HID Data and analyze + decode it (which is how I made this module)
 
 
-## Adding support for another keyboard (reverse-engineering workflow)
+### Adding support for another keyboard (reverse-engineering workflow)
 1. Set up virtual machine with Windows and install vendor's program into it. 
 2. Forward your keyboard into the VM
 3. Hook up wireshark in Linux and sniff keyboard's protocol
