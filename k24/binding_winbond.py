@@ -69,7 +69,7 @@ class Usblinux():
 
     def setcolor(self, key_color, ambient_color, brightness):
         # Brightness: 0 is powered off, 5 is max brightness
-        # set keylight + brightness
+        # set key_color + brightness
         self.write(bytearray.fromhex('06be150001010b000' + str(brightness) + '000000' + key_color + '0000000000000000000000000000000000'))
         
         # set ambient_light
