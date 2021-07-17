@@ -1,7 +1,7 @@
 
 # motospeed-k24
 
-Keyboard backlight control for the K24 numeric keypad. 
+Keyboard backlight control for the Motospeed K24 numeric keypad. 
 
 ## Usage
 
