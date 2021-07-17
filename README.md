@@ -41,7 +41,7 @@ The Motospeed K24 Mechanical numeric keyPad.
 VID: 0416, PID: a0f8, Winbond Electronics Corp. Gaming Keyboard.
 
 ### Restrictions
-This was a very quick and dirty rewrite (and simplifcation) of the https://github.com/brainrom/winbond-kbdbl project
+This was a quick and dirty rewrite (and simplifcation) of the https://github.com/brainrom/winbond-kbdbl project
 to support the Motospeed K24 numeric keypad.
 
 You can only set the keys to a single color and adjust the brightness. That's pretty much it.  
