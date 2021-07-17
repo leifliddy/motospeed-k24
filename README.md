@@ -13,9 +13,10 @@ Dependant Packages:
 * [colour 0.1.5+](https://github.com/vaab/colour)
 
 
-Install on Fedora with:
-* ```dnf install python3-colour python3-pyusb```
-
+**Fedora package install**
+```
+dnf install python3-colour python3-pyusb```
+```
 
 run the following to turn all keys purple, turn the ambient light-band red, and set the brightness to 3 (scale 0-5)
 
