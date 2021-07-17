@@ -45,7 +45,7 @@ This was a quick and dirty rewrite (and simplifcation) of the https://github.com
 to support the Motospeed K24 numeric keypad.
 
 You can only set the keys to a single color and adjust the brightness. That's pretty much it.  
-I simply don't have the desire or need to enable effects or to enable profiles to set individual keys to different colors.  
+I simply don't have the need or desire to enable effects or to enable profiles to set individual keys to different colors.  
 But honestly, it wouldn't be that difficult to use wireshark to capture the HID Data and analyze + decode it (which is how I made this module)
 
 
