@@ -23,7 +23,7 @@ dnf install python3-colour python3-pyusb
 running the following will turn all keys purple, set the ambient light-band color to red, and set the brightness to 3 (scale 0-5)
 
 ```
-git clone git clone https://github.com/leifliddy/motospeed-k24.git
+git clone https://github.com/leifliddy/motospeed-k24.git
 cd motospeed-k24/
 python3 -m k24 -c purple -a red -b 3 
 ```
