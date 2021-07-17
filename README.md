@@ -50,10 +50,10 @@ But honestly, it wouldn't be that difficult to use wireshark to capture the HID 
 
 
 ### Adding support for another keyboard (reverse-engineering workflow)
-1. Set up virtual machine with Windows and install vendor's program into it. 
-2. Forward your keyboard into the VM
+1. Set up virtual machine with Windows and install vendor's program into it 
+2. Forward your keypad into the VM
 3. Hook up wireshark in Linux and sniff keyboard's protocol
-4. Recreate it's behaviour
+4. Recreate its behaviour
 5. Fork repo and post your code
 6. ????
 7. PROFIT
