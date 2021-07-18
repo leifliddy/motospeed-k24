@@ -26,7 +26,7 @@ def main():
         args.ambient = args.color
 
     if args.color is not None:
-        # Set light for all keys
+        # set light for all keys
         lightctl.setall(args.color, args.ambient, args.brightness)
 
 

@@ -19,9 +19,18 @@ class Keylights:
 
 
     def gencolorprofile(self, color):
-        if not isinstance(color, Color):
+        isvalid_hex = False
+
+        try:
+            isvalid_hex = int(color, 16)
+            colorstr = color
+        except:
             color = Color(color)
-        colorstr = color.hex_l[1:]
+            colorstr = color.hex_l[1:]
+
+        if isvalid_hex > 16777215:
+            print('the max hex value of ffffff has been exceeded....exiting')
+            exit()
         return colorstr
 
 
