@@ -28,12 +28,18 @@ cd motospeed-k24/
 python3 -m k24 -c purple -a red -b 3 
 ```
 
-You could also just run: 
+The only required argument is **-c** (color)  
+For example, you could also just run:
 ```
 python3 -m k24 -c purple
 ```
 
-In this case, the -a (ambient light) value would be set to purple (to match the -c value) and the -b value would be set to 2 (which is the default value if it's not specified)
+In this case, the -a (ambient light) value would be set to purple (it'll match the -c value by default) and the -b value would be set to 2 (which is the default value if it's not specified)
+
+Hex values can also be used: 
+```
+python -m k24 -c ffff00 -a 0000ff
+```
 
 ### Hardware
 
