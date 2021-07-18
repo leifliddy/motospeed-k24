@@ -12,9 +12,9 @@ def main():
     parse = argparse.ArgumentParser(
         description='Change light color for switches of the K24 numpad')
     parse.add_argument("-c", "--color", nargs='?', default='#red', help=
-        "Set backlight color in keys. Can be input as #rrggbb in hexadecimal or as name.")
+        "Set backlight color in keys. Can be input as rrggbb in hexadecimal or as a color name")
     parse.add_argument("-a", "--ambient", nargs='?', help=
-        "Set color on ambient light band. Can be input as #rrggbb in hexadecimal or as name.")
+        "Set color on ambient light-band. Can be input as rrggbb in hexadecimal or as a color name")
     parse.add_argument("-b", "--brightness", nargs='?', default=2, help=
         "Set keyboard brightness (0-5)")
 
